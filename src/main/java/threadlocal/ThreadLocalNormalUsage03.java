@@ -6,16 +6,23 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ * 加锁解决线程安全问题
  * @author BaiJY
  * @date 2023/07/10
  **/
-public class ThreadLocalNormalUsage01 {
+public class ThreadLocalNormalUsage03 {
 
+    public static ExecutorService threadpool = Executors.newFixedThreadPool(10);
+    //非线程安全
+    static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     public String date(int seconds) {
         Date date = new Date(1000 * seconds);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        return dateFormat.format(date);
+        String s = null;
+        synchronized (ThreadLocalNormalUsage03.class) {
+            s = dateFormat.format(date);
+        }
+        return s;
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -26,7 +33,7 @@ public class ThreadLocalNormalUsage01 {
             threadpool.submit(new Runnable() {
                 @Override
                 public void run() {
-                    String date = new ThreadLocalNormalUsage01().date(finalI);
+                    String date = new ThreadLocalNormalUsage03().date(finalI);
                     System.out.println(date);
                 }
             });
