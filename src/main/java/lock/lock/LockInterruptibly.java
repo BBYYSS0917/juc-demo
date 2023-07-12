@@ -42,6 +42,7 @@ public class LockInterruptibly implements Runnable {
             }
 
         } catch (InterruptedException e) {
+//            System.out.println(Thread.currentThread().getName() + "获取锁期间被中断了");
             System.out.println("获取锁期间被中断了");
             e.printStackTrace();
         }
