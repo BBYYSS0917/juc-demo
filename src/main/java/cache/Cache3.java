@@ -16,17 +16,44 @@ public class Cache3<A, V> implements Computable<A, V> {
 
     public static void main(String[] args) {
         Cache3<String, Integer> cache2 = new Cache3<>(new ExpensiveFunction());
-        try {
-            System.out.println("开始计算");
-            Integer result = cache2.compute("13");
-            System.out.println("第一次计算结果：" + result);
-            result = cache2.compute("13");
-            System.out.println("第二次计算结果：" + result);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("开始计算");
+                    Integer result = cache2.compute("13");
+                    System.out.println("第一次计算结果：" + result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("开始计算");
+                    Integer result = cache2.compute("666");
+                    System.out.println("第一次计算结果：" + result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("开始计算");
+                    Integer result = cache2.compute("13");
+                    System.out.println("第一次计算结果：" + result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     @Override
